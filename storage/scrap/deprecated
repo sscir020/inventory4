@@ -1,0 +1,12 @@
+                <li><a href="#" class="divider">|</a></li>
+				<li><a href="{{url_for('ctr.form_change_material')}}"> 材料列表</a></li><!--,page=1-->
+				<li><a href="{{url_for('ctr.form_change_customerservice')}}"> 售后列表</a></li>
+				<li><a href="{{url_for('ctr.form_change_buy')}}"> 购买列表</a></li>
+				<li><a href="{{url_for('ctr.form_change_rework')}}"> 返修列表</a></li>
+				<li><a href="{{url_for('ctr.add_material')}}">添加新材料</a></li>
+				<li><a href="{{url_for('ctr.show_join_oprs_main')}}">主要操作记录</a></li>
+				<!--<li><a href="{{url_for('ctr.show_join_oprs')}}">全部操作记录</a></li>-->
+				<li><a href="{{url_for('ctr.form_search_device')}}">出入货记录</a></li>
+				<!--<li><a href="{{url_for('ctr.show_users')}}">用户列表</a></li>-->
+
+										<li><a href="{{url_for('ctr.about_app')}}">使用说明</a></li>

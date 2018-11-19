@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% import "_macros.html" as macros %}
+
+
+{% block page_content %}
+<div style="float:right">
+    {% set record=db.session.query(Opr).order_by(Opr.opr_id.desc()).first() %}
+    <label>Last Update: {{ record.momentary }}</label>
+</div>
+<div>
+    <h4>材料列表</h4>
+    <form name="form_material" method="post">
+        <!--材料ID{{form.material_id}}-->
+        <!--数量{{form.diff}}-->
+        操作{{form.oprtype}}
+        设备ID(可为空){{form.device_id}}
+        材料名/备注(可为空){{form.comment}}
+        筛选条件(可为空){{form.condition}}
+        <table class="table table-hover" id="table_orange">
+             <thead>
+                 <th>材料ID</th>
+                 <th>材料名</th>
+                 <th>库存数量</th>
+                 <th>修好库存数量</th>
+                 <!--<th>空闲数量</th>-->
+                 <th>备货数量</th>
+                 <th>报废数量</th>
+                 <th>售出(出库)数量</th>
+                 <th>售后带出数量</th>
+                 <th>警戒值</th>
+                 <th>参数模板ID</th>
+                 <th>备注</th>
+                 <th>点选-数量</th>
+             </thead>
+             {% for entry in materials %}
+             <tr id="tr_entry">
+                 <td>{{entry.material_id}}</td>
+                 <td>{{entry.material_name}}</td>
+                 {% if entry.storenum < entry.alarm_level  %}
+                 <td  style="color:red">{{entry.storenum}}</td>
+                 {% else %}
+                 <td>{{entry.storenum}}</td>
+                 {% endif %}
+                 <td>{{entry.restorenum}}</td>
+                 <!--<td>{{entry.storenum+entry.restorenum}}</td>-->
+                 <td>{{entry.preparenum}}</td>
+                 <td>{{entry.scrapnum}}</td>
+                 <td>{{entry.salenum}}</td>
+                 <td>{{entry.resalenum}}</td>
+                 <td>{{entry.alarm_level}}</td>
+                 <td>{{entry.acces_id}}</td>
+                 <td>{% if entry.comment != None %}
+                     {{entry.comment}}
+                     {% endif %}
+                 </td>
+                 <td><input type="checkbox" name="input_checkbox_{{entry.material_id}}"  value="{{entry.material_id}}" onclick="toggle_checkbox()">
+                     <input type="number" name="input_number_{{entry.material_id}}" onclick="toggle_checkbox()"></td>
+             </tr>
+             {% endfor %}
+        </table>
+        <input type="hidden" id="input_hidden" >
+        {{form.submit}}
+    </form>
+</div>
+{% if pagination %}
+<div class="pagination">
+    {{ macros.pagination_widget(pagination, 'ctr.form_change_material') }}
+</div>
+{% endif %}
+<p>&nbsp;&nbsp;&nbsp;&nbsp;*出库，售后带回，售后带出需要填写设备ID</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;*售后带回没有设备ID的，设备ID栏请填写2018083000100003</p>
+{% endblock %}
+

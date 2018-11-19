@@ -1,0 +1,77 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}Inveory{% endblock %}
+{% block head %}
+	<meta charset="utf8">
+	<title>奥斯恩-进销存系统</title>
+	{{ super() }}
+	<link rel="stylesheet" type="text/css" href="static/css/tablelook.css"  >
+	<!--<script src="../static/jquery-3.3.1.js">-->
+
+
+{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-default" role="navigation">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="sr-only">Toggle</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="{{url_for('ctr.welcome_user')}}">首页</a>
+		</div>
+		<div class="navbar-collapse collapse">
+			<ul class="nav navbar-nav">
+				<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">欢迎
+					{% if session['userid']!= None %}
+					{{session['username']}}<b class="caret"></b></a>
+					{% else %}
+					User<b class="caret"></b></a>
+					{% endif %}
+					<ul class="dropdown-menu">
+						<li><a href="{{url_for('ctr.log_user_in')}}">登录</a></li>
+						<!--<li><a href="{{url_for('ctr.register')}}">注册</a></li>-->
+						<li><a href="{{url_for('ctr.log_user_out')}}">退出</a></li>
+						<li><a href="{{url_for('ctr.about_app')}}">使用说明</a></li>
+					</ul>
+				</li>
+                <li><a href="#" class="divider">|</a></li>
+				<li><a href="{{url_for('ctr.form_change_material')}}"> 材料列表</a></li><!--,page=1-->
+				<li><a href="{{url_for('ctr.form_change_customerservice')}}"> 售后列表</a></li>
+				<li><a href="{{url_for('ctr.form_change_buy')}}"> 购买列表</a></li>
+				<li><a href="{{url_for('ctr.form_change_rework')}}"> 返修列表</a></li>
+				<li><a href="{{url_for('ctr.add_material')}}">添加新材料</a></li>
+				<li><a href="{{url_for('ctr.show_join_oprs_main')}}">主要操作记录</a></li>
+				<!--<li><a href="{{url_for('ctr.show_join_oprs')}}">全部操作记录</a></li>-->
+				<li><a href="{{url_for('ctr.form_search_device')}}">出入货记录</a></li>
+				<!--<li><a href="{{url_for('ctr.show_users')}}">用户列表</a></li>-->
+			</ul>
+			<!--<input type="text" name="input_text_precontent" value=""/>-->
+		</div>
+	</div>
+</nav>
+
+{% endblock %}
+
+
+
+{% block content %}
+
+
+
+<div class="container">
+	{% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    </div>
+    {% endfor %}
+
+    {% block page_content %}
+
+	{% endblock %}
+</div>
+{% endblock %}
