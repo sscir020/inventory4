@@ -13,6 +13,7 @@ import datetime
 @loggedin_required
 def form_change_buy():
     form=BuyMaterialForm(request.form)
+    condition = form.condition.data
     if request.method=="POST":
         # print(request.form)
         # print(form)
@@ -83,7 +84,8 @@ def form_change_buy():
     # flash('购买列表')
     page = request.args.get('page',1,type=int)
     pagination=db.session.query(Buy.buy_id,Buy.material_id,Material.material_name,Buy.batch,Buy.num,Buy.comment).\
-        outerjoin(Material,Material.material_id==Buy.material_id).order_by(Buy.batch.desc()).paginate(page,per_page=current_app.config['FLASK_NUM_PER_PAGE'],error_out=False)
+        outerjoin(Material,Material.material_id==Buy.material_id).filter(Material.material_name.like('%' + condition + '%') if condition is not None else "").\
+        order_by(Buy.batch.desc()).paginate(page,per_page=current_app.config['FLASK_NUM_PER_PAGE'],error_out=False)
     buybatches=pagination.items
     db.session.close()
     return render_template('buy_material_table.html',form=form,buybatches=buybatches,pagination=pagination )
@@ -169,9 +171,11 @@ def change_customerservice_oprs_db(oprtype,materialid, service_id,device_id,diff
 @loggedin_required
 def form_change_rework():
     form=ReworkForm(request.form)
+    condition = form.condition.data
     if request.method=="POST":
         # print(request.form)
         ischecked = False
+
         for key in request.form.keys():
             if "input_checkbox" in key:
                 ischecked=True
@@ -263,7 +267,7 @@ def form_change_rework():
     # db.session.flush()
     page = request.args.get('page',1,type=int)
     pagination = db.session.query(Rework.rework_id,Rework.material_id,Rework.service_id,Rework.device_id,Material.material_name,Rework.batch,Rework.num,Rework.comment). \
-        outerjoin(Material, Material.material_id == Rework.material_id).order_by(Rework.batch.desc()).paginate(page,per_page=current_app.config['FLASK_NUM_PER_PAGE'],error_out=False)
+        outerjoin(Material, Material.material_id == Rework.material_id).filter(Material.material_name.like('%' + condition + '%') if condition is not None else "").order_by(Rework.batch.desc()).paginate(page,per_page=current_app.config['FLASK_NUM_PER_PAGE'],error_out=False)
     db.session.close()
     reworkbatches=pagination.items
     return render_template('rework_material_table.html',form=form,reworkbatches=reworkbatches,pagination=pagination )

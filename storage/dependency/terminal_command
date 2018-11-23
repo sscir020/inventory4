@@ -1,0 +1,5 @@
+git add app*
+git add storage*
+git add main*
+git commit -m "first commmit"
+git push origin master

@@ -55,6 +55,7 @@ class BuyMaterialForm(Form):#2
     diff=IntegerField("数量",validators=[DataRequired(),NumberRange(min=1)])
     oprtype=SelectField("提交",choices=[(Oprenum.INBOUND.name,'入库'),(Oprenum.CANCELBUY.name,'取消购买'),(Oprenum.COMMENT.name,'修改备注')])#
     comment=StringField("备注")
+    condition = StringField("筛选条件")
     submit=SubmitField("提交")
 
 class ReworkForm(Form):#4
@@ -62,6 +63,7 @@ class ReworkForm(Form):#4
     diff=IntegerField("数量",validators=[DataRequired(),NumberRange(min=1)])
     oprtype=SelectField("提交",choices=[(Oprenum.RESTORE.name,'修好'),(Oprenum.SCRAP.name,'报废'),(Oprenum.CSRESTORE.name,'材料售后修好'),(Oprenum.CSSCRAP.name,'材料售后报废'),(Oprenum.COMMENT.name,'修改备注')])
     comment=StringField("备注")
+    condition = StringField("筛选条件")
     submit=SubmitField("提交")
 
 # class DeviceForm(Form):#1
